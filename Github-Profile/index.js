@@ -13,7 +13,8 @@ fromData.addEventListener("submit", async function (e) {
    let arrValue = splitValue.join("");
 
    if (arrValue === "") {
-      console.log("Cannot find empty ");
+      name.innerText = `Cannot find empty`;
+      // console.log("Cannot find empty ");
    } else {
       try {
          let Fetchvalue = await fetch(
@@ -21,7 +22,7 @@ fromData.addEventListener("submit", async function (e) {
          );
          let response = await Fetchvalue.json();
          let data = await response;
-         console.log(data.name);
+         // console.log(data.name);
 
          if (data.name === undefined || data.name === null) {
             name.innerText = `Github name not found! ${arrValue}`;
