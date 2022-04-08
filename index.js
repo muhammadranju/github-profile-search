@@ -16,28 +16,27 @@ fromData.addEventListener("submit", async function (e) {
       console.log("Cannot find empty ");
    } else {
       try {
-         if (navigator.onLine === false) {
-            imageSrc.setAttribute("src", "/Github-Profile/avatar.png");
-         } else {
-            let Fetchvalue = await fetch(
-               `https://api.github.com/users/${arrValue}`
-            );
-            console.log(Fetchvalue);
-            if (!Fetchvalue.status === 404) {
-               throw Error("404 Not Found");
-            }
-            let response = await Fetchvalue.json();
-            let data = await response;
-            // console.log(data.name);
+         imageSrc.setAttribute("src", "/Github-Profile/avatar.png");
+         console.log("Now your offline");
 
-            if (data.name === undefined || data.name === null) {
-               name.innerText = `Github name not found! ${arrValue}`;
-            } else {
-               name.innerText = `Github name is: ${data.name}`;
-            }
-            // console.log(data);
-            imageSrc.setAttribute("src", data.avatar_url);
+         let Fetchvalue = await fetch(
+            `https://api.github.com/users/${arrValue}`
+         );
+         console.log(Fetchvalue);
+         if (!Fetchvalue.status === 404) {
+            throw Error("404 Not Found");
          }
+         let response = await Fetchvalue.json();
+         let data = await response;
+         // console.log(data.name);
+
+         if (data.name === undefined || data.name === null) {
+            name.innerText = `Github name not found! ${arrValue}`;
+         } else {
+            name.innerText = `Github name is: ${data.name}`;
+         }
+         // console.log(data);
+         imageSrc.setAttribute("src", data.avatar_url);
       } catch (error) {
          console.log(error);
       }
@@ -45,3 +44,11 @@ fromData.addEventListener("submit", async function (e) {
    input.value = "";
    searchId.innerText = "";
 });
+setInterval(() => {
+   if (navigator.onLine === false) {
+      console.log("Now your offline");
+      imageSrc.setAttribute("src", "/Github-Profile/avatar.png");
+   } else {
+      console.log("Now your online!");
+   }
+}, 2000);
