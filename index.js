@@ -13,24 +13,31 @@ fromData.addEventListener("submit", async function (e) {
    let arrValue = splitValue.join("");
 
    if (arrValue === "") {
-      name.innerText = `Cannot find empty`;
-      // console.log("Cannot find empty ");
+      console.log("Cannot find empty ");
    } else {
       try {
-         let Fetchvalue = await fetch(
-            `https://api.github.com/users/${arrValue}`
-         );
-         let response = await Fetchvalue.json();
-         let data = await response;
-         // console.log(data.name);
-
-         if (data.name === undefined || data.name === null) {
-            name.innerText = `Github name not found! ${arrValue}`;
+         if (navigator.onLine === false) {
+            imageSrc.setAttribute("src", "/Github-Profile/avatar.png");
          } else {
-            name.innerText = `Github name is: ${data.name}`;
+            let Fetchvalue = await fetch(
+               `https://api.github.com/users/${arrValue}`
+            );
+            console.log(Fetchvalue);
+            if (!Fetchvalue.status === 404) {
+               throw Error("404 Not Found");
+            }
+            let response = await Fetchvalue.json();
+            let data = await response;
+            // console.log(data.name);
+
+            if (data.name === undefined || data.name === null) {
+               name.innerText = `Github name not found! ${arrValue}`;
+            } else {
+               name.innerText = `Github name is: ${data.name}`;
+            }
+            // console.log(data);
+            imageSrc.setAttribute("src", data.avatar_url);
          }
-         // console.log(data);
-         imageSrc.setAttribute("src", data.avatar_url);
       } catch (error) {
          console.log(error);
       }
